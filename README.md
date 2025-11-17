@@ -1,1 +1,1 @@
-# WifiQRCode
+# WifiQRCode.
