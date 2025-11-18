@@ -1,0 +1,71 @@
+# **RESUME_PROMPT.txt**
+```text
+WiFi QR Code Generator — Architectural Intent & Engineering Rationale
+WiFi QR Code Generator — Architecture & Roadmap
+
+Purpose:
+A simple Python utility to generate Wi-Fi QR codes for printing or digital distribution.
+Create Wi-Fi QR codes using a lightweight Python library with CLI and REST API wrappers.
+Designed to run locally and be self-hosted.
+
+Current Capabilities:
+- Generates PNG QR codes using WIFI: payload.
+- Supports WPA and WPA2 among other protocols.
+- No persistence or logging of sensitive data.
+- CLI and Flask-based local API for flexibility.
+
+Primary Interfaces:
+1. Library function:
+   generate_wifi_qr(ssid, password, security, hidden) -> PNG bytes
+
+2. Command-line interface (cli.py)
+   - Reads defaults from default.json
+   - Writes PNG file to local filesystem
+
+3. REST API (Flask)
+   POST /generate
+   Accepts JSON payload: { ssid, password, security, hidden }
+   Returns raw QR image bytes as image/png
+   No file writing, no persistence.
+
+Major Constraints & Principles:
+- No cloud infrastructure or third-party storage
+- No batch mode
+- No extra QR image customization (size, margin, colors, logos, SVG, etc.)
+- No authentication for now, but designed for easy add-on later
+- No unit tests yet, but planned
+- Self-contained flat file structure for simplicity (no package directories)
+
+Security & Logging Notes:
+- Must avoid logging plain passwords in future version
+- Future API key will protect endpoint once exposed publicly
+- QR persistence is intentionally avoided because it increases security complexity
+
+Planned Enhancements (Future Iteration):
+- API key / OAuth integration
+- Unit test coverage
+- Optional front-end HTML UI
+- Simple configuration system
+- Packaging & installation (pyproject.toml + console_scripts)
+- Optional password masking and structured logging
+
+Reasons for Flask:
+- Lower dependency overhead compared to FastAPI
+- Minimal surface area, easier self-hosting
+- QR image streaming easy with send_file()
+
+Final Technical Summary:
+generate_wifi_qr() is the central function.
+CLI and REST API are thin wrappers around the library.
+Project is intentionally kept minimal and predictable for controlled expansion.
+
+Later Iterations (Roadmap):
+- Distribution packaging (PyPI or similar)
+- Docker support
+- Authentication and authorization layers
+- Full input validation in app.py
+- CI pipelines, unit tests, static analysis
+- Production deployment (Gunicorn, HTTPS, secrets management)
+- Rate limiting and API quotas
+- Extended schema validation and error handling
+- Improved logging, observability, and metrics
